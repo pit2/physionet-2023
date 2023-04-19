@@ -1,0 +1,4 @@
+Patient: ICARE_0846
+Outcome: Good
+Outcome probability: 0.125
+CPC: 1.191

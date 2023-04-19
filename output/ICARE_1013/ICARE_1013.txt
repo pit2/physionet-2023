@@ -1,0 +1,4 @@
+Patient: ICARE_1013
+Outcome: Good
+Outcome probability: 0.109
+CPC: 2.016

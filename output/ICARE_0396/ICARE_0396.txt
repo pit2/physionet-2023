@@ -1,0 +1,4 @@
+Patient: ICARE_0396
+Outcome: Poor
+Outcome probability: 0.797
+CPC: 4.086

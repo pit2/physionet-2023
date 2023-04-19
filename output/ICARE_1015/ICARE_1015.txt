@@ -1,0 +1,4 @@
+Patient: ICARE_1015
+Outcome: Good
+Outcome probability: 0.234
+CPC: 2.410
