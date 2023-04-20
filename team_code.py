@@ -12,6 +12,7 @@
 from helper_code import *
 import numpy as np, os, sys
 import mne
+import h5py
 from sklearn.impute import SimpleImputer
 from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
 import joblib
@@ -110,6 +111,7 @@ def run_challenge_models(models, data_folder, patient_id, verbose):
 
     # Extract features.
     features = get_features(patient_metadata, recording_metadata, recording_data)
+    export_to_hdf5(features, "data.hdf5", 100)
     features = features.reshape(1, -1)
 
     # Impute missing data.
@@ -221,3 +223,11 @@ def get_features(patient_metadata, recording_metadata, recording_data):
     features = np.hstack((patient_features, recording_features))
 
     return features
+
+# Export data to hd5f
+def export_to_hdf5(features, filename, limit=0):
+    with h5py.File(filename, "w") as f:
+        if limit != 0:
+            features = features[:limit]
+        f.create_dataset("data", data=features)
+
