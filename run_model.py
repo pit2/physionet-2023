@@ -70,12 +70,15 @@ def run_model(model_folder, data_folder, output_folder, allow_failures, verbose)
 if __name__ == '__main__':
     # Parse the arguments.
     if not (len(sys.argv) == 4 or len(sys.argv) == 5):
-        raise Exception('Include the model, data, and output folders as arguments, e.g., python run_model.py model data outputs.')
-
-    # Define the model, data, and output folders.
-    model_folder = sys.argv[1]
-    data_folder = sys.argv[2]
-    output_folder = sys.argv[3]
+        model_folder = "model"
+        data_folder = "../data/training"
+        output_folder = "output"
+        print("No paths for model, data, and output provided. Using default paths.")
+        # raise Exception('Include the model, data, and output folders as arguments, e.g., python run_model.py model data outputs.')
+    else: # Define the model, data, and output folders.
+        model_folder = sys.argv[1]
+        data_folder = sys.argv[2]
+        output_folder = sys.argv[3]
 
     # Allow or disallow the model to fail on parts of the data; helpful for debugging.
     allow_failures = False

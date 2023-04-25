@@ -140,7 +140,7 @@ def save_challenge_model(model_folder, imputer, outcome_model, cpc_model):
     joblib.dump(d, filename, protocol=0)
 
 # Extract features from the data.
-def get_features(patient_metadata, recording_metadata, recording_data):
+def get_features(patient_metadata, recording_metadata, recording_data, export=False):
     # Extract features from the patient metadata.
     age = get_age(patient_metadata)
     sex = get_sex(patient_metadata)
