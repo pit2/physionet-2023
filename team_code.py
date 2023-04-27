@@ -111,7 +111,6 @@ def run_challenge_models(models, data_folder, patient_id, verbose):
 
     # Extract features.
     features = get_features(patient_metadata, recording_metadata, recording_data)
-    export_to_hdf5(features, "data.hdf5", 100)
     features = features.reshape(1, -1)
 
     # Impute missing data.
@@ -140,7 +139,7 @@ def save_challenge_model(model_folder, imputer, outcome_model, cpc_model):
     joblib.dump(d, filename, protocol=0)
 
 # Extract features from the data.
-def get_features(patient_metadata, recording_metadata, recording_data, export=False):
+def get_features(patient_metadata, recording_metadata, recording_data, stacked=True):
     # Extract features from the patient metadata.
     age = get_age(patient_metadata)
     sex = get_sex(patient_metadata)
@@ -218,16 +217,13 @@ def get_features(patient_metadata, recording_metadata, recording_data, export=Fa
         quality_score = float('nan')
 
     recording_features = np.hstack((signal_mean, signal_std, delta_psd_mean, theta_psd_mean, alpha_psd_mean, beta_psd_mean, quality_score))
+    recordings = np.stack((signal_mean, signal_std, delta_psd_mean, theta_psd_mean, alpha_psd_mean, beta_psd_mean))
+    recordings = recordings.reshape(recordings.shape[1], -1) # Columns contain values (signal_mean, signla_std, ...), rows measurements at time stamp
 
     # Combine the features from the patient metadata and the recording data and metadata.
     features = np.hstack((patient_features, recording_features))
-
-    return features
-
-# Export data to hd5f
-def export_to_hdf5(features, filename, limit=0):
-    with h5py.File(filename, "w") as f:
-        if limit != 0:
-            features = features[:limit]
-        f.create_dataset("data", data=features)
+    if stacked:
+        return features
+    else:
+        return patient_features, quality_score, recordings 
 
