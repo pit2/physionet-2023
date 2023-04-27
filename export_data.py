@@ -29,8 +29,8 @@ if __name__ == '__main__':
     for i in range(limit):
         patient_id = patient_ids[i]
         patient_metadata, recording_metadata, recording_data = load_challenge_data(data_folder, patient_id)
-        patient_features, quality_score, recordings = get_features(patient_metadata, recording_metadata, recording_data, stacked=False)
-        print(quality_score)
+        patient_features, quality_score, recordings = get_features(patient_metadata, recording_metadata, recording_data, stacked=False, encode_sex=False)
+
         if not os.path.exists(export_folder):
             os.makedirs(export_folder)
 
@@ -39,13 +39,15 @@ if __name__ == '__main__':
             os.makedirs(subdir)
 
         file = os.path.join(subdir, 'patient_'+patient_id+'.csv')
-        with open(file, mode='w', newline='\n') as f:
-            np.savetxt(f, np.append(patient_features, quality_score), delimiter=',', fmt='%.0f')
+        with open(file, mode='w', newline='') as f:
+            writer = csv.writer(f)
+            patient_features.append(quality_score)
+            writer.writerow(patient_features)
 
         f.close()
                             
         file = os.path.join(subdir, 'recordings_'+patient_id+'.csv')
-        with open(file, mode='w', newline='\n') as f:
+        with open(file, mode='w', newline='') as f:
             np.savetxt(f, recordings, delimiter=',', fmt='%.16f')
 
 
