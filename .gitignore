@@ -2,7 +2,6 @@
 .Rhistory
 .RData
 .Ruserdata
-/env/*
 *.pyc
-*.pyc
-env
+__pycache__/*
+env/*
