@@ -9,12 +9,15 @@ You can install the dependencies for these scripts by running
     pip install -r requirements.txt
 
 To export all the data, run 
+
     python3 export_data.py data_in data_out
+    
 where:
     - data_in is the path to the folders containing the original training data provided by the PhysioNet 2023 challenge, i.e. data/training,
     - data_out is the path where the exported files are written.
 
 To export online data for the first n patients, run
+
     python3 export_data.py data_in data_out n
 
 After running this script, the data_out folder contains a directory structure similar to the one provided by the PhysioNet 2023 challenge where each subfolder contains data of a single patient. The patient id is implicit in the file and folder name, i.e. ICARE_0284 is the folder for patient 0284. Within each folder, two *.csv files are produced:
