@@ -1,4 +1,30 @@
-# Python example code for the George B. Moody PhysioNet Challenge 2023
+# Code for PhysioNet Challenge 2023
+
+This repository is cloned from the original George B. Moody PhysioNet Challenge 2023 Python example code repository. It contains modified and added code to export the data to *.csv files.
+
+## Usage
+
+You can install the dependencies for these scripts by running
+
+    pip install -r requirements.txt
+
+To export all the data, run 
+
+    python3 export_data.py data_in data_out
+
+where:
+    - data_in is the path to the folders containing the original training data provided by the PhysioNet 2023 challenge, i.e. data/training,
+    - data_out is the path where the exported files are written.
+
+To export only data for the first n patients, run
+
+    python3 export_data.py data_in data_out n
+
+After running this script, the data_out folder contains a directory structure similar to the one provided by the PhysioNet 2023 challenge where each subfolder contains data of a single patient. The patient id is implicit in the file and folder name, i.e. ICARE_0284 is the folder for patient 0284. Within each folder, two *.csv files are produced:
+    - one, e.g. patient_ICARE_0284.csv, contains the patient data (age, sex, rosc, ohca, vfib, ttm) and the quality score.
+    - the other, e.g. recordings_ICARE_0284.csv, contains the recordings as time series data, i.e. each row contains data of a specific time stamp.
+
+# Original Readme file for Python example code for the George B. Moody PhysioNet Challenge 2023
 
 ## What's in this repository?
 

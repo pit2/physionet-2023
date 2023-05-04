@@ -138,7 +138,7 @@ def save_challenge_model(model_folder, imputer, outcome_model, cpc_model):
     joblib.dump(d, filename, protocol=0)
 
 # Extract features from the data.
-def get_features(patient_metadata, recording_metadata, recording_data):
+def get_features(patient_metadata, recording_metadata, recording_data, stacked=True, encode_sex=True):
     # Extract features from the patient metadata.
     age = get_age(patient_metadata)
     sex = get_sex(patient_metadata)
@@ -162,8 +162,7 @@ def get_features(patient_metadata, recording_metadata, recording_data):
         male   = 0
         other  = 1
 
-    # Combine the patient features.
-    patient_features = np.array([age, female, male, other, rosc, ohca, vfib, ttm])
+
 
     # Extract features from the recording data and metadata.
     channels = ['Fp1-F7', 'F7-T3', 'T3-T5', 'T5-O1', 'Fp2-F8', 'F8-T4', 'T4-T6', 'T6-O2', 'Fp1-F3',
@@ -216,8 +215,23 @@ def get_features(patient_metadata, recording_metadata, recording_data):
         quality_score = float('nan')
 
     recording_features = np.hstack((signal_mean, signal_std, delta_psd_mean, theta_psd_mean, alpha_psd_mean, beta_psd_mean, quality_score))
+    recordings = np.stack((signal_mean, signal_std, delta_psd_mean, theta_psd_mean, alpha_psd_mean, beta_psd_mean))
+    recordings = recordings.reshape(recordings.shape[1], -1) # Columns contain values (signal_mean, signla_std, ...), rows measurements at time stamp
+
+    # Combine the patient features.
+    if stacked:
+        patient_features = np.array([age, female, male, other, rosc, ohca, vfib, ttm])
+    else:
+        if encode_sex:
+            patient_features = [age, female, male, other, rosc, ohca, vfib, quality_score]
+        else:
+            patient_features = [age, sex, rosc, ohca, vfib, ttm, quality_score]
 
     # Combine the features from the patient metadata and the recording data and metadata.
     features = np.hstack((patient_features, recording_features))
 
-    return features
+    if stacked:
+        return features
+    else:
+        return patient_features, recordings 
+
