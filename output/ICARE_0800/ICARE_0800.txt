@@ -1,4 +1,0 @@
-Patient: ICARE_0800
-Outcome: Good
-Outcome probability: 0.086
-CPC: 1.473

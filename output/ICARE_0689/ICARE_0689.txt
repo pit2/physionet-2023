@@ -1,4 +1,0 @@
-Patient: ICARE_0689
-Outcome: Good
-Outcome probability: 0.188
-CPC: 1.684

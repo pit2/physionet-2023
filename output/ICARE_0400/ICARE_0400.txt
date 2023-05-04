@@ -1,4 +1,0 @@
-Patient: ICARE_0400
-Outcome: Poor
-Outcome probability: 0.988
-CPC: 4.961

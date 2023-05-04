@@ -1,4 +1,0 @@
-Patient: ICARE_0433
-Outcome: Good
-Outcome probability: 0.270
-CPC: 2.391

@@ -1,4 +1,0 @@
-Patient: ICARE_0658
-Outcome: Poor
-Outcome probability: 0.910
-CPC: 4.414
