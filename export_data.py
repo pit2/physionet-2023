@@ -78,7 +78,7 @@ if __name__ == '__main__':
         headers = ("alpha_psd", "beta_psd", "delta_psd", "theta_psd");
 
         for j in range(0,4):
-            file = os.path.join(subdir, headers[j]+''+patient_id+'.csv')
+            file = os.path.join(subdir, headers[j]+' '+patient_id+'.csv')
             with open(file, mode='w', newline='') as f:
                 np.savetxt(f, recordings_raw[j], delimiter=',', fmt='%.16f', comments='')
             f.close()
