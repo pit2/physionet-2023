@@ -204,6 +204,9 @@ def get_features(patient_metadata, recording_metadata, recording_data, stacked=T
         alpha_psd, _ = mne.time_frequency.psd_array_welch(signal_data, sfreq=sampling_frequency,  fmin=8.0, fmax=12.0, verbose=False)
         beta_psd,  _ = mne.time_frequency.psd_array_welch(signal_data, sfreq=sampling_frequency, fmin=12.0, fmax=30.0, verbose=False)
 
+        # Get sampled signal data from the various channels
+        raw_samples = (alpha_psd, beta_psd, delta_psd, theta_psd)
+
         delta_psd_mean = np.nanmean(delta_psd, axis=1)
         theta_psd_mean = np.nanmean(theta_psd, axis=1)
         alpha_psd_mean = np.nanmean(alpha_psd, axis=1)
@@ -233,5 +236,5 @@ def get_features(patient_metadata, recording_metadata, recording_data, stacked=T
     if stacked:
         return features
     else:
-        return patient_features, recordings 
+        return patient_features, recordings, raw_samples
 

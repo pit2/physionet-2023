@@ -41,16 +41,19 @@ if __name__ == '__main__':
     if num_patients==0:
         raise FileNotFoundError('No data was provided.')
     
+    limit = num_patients
+    
     if (len(sys.argv) == 4):
         if is_integer(sys.argv[3]):
             limit = min(int (sys.argv[3]), num_patients)
         else: 
             raise Exception('If third argument is provided, it must be an integer, e.g., python export_data.py data_in data_out 50.')
-    
+    print(limit)
     for i in range(limit):
         patient_id = patient_ids[i]
         patient_metadata, recording_metadata, recording_data = load_challenge_data(data_folder, patient_id)
-        patient_features, recordings = get_features(patient_metadata, recording_metadata, recording_data, stacked=False, encode_sex=False)
+        patient_features, recordings_sum, recordings_raw = get_features(patient_metadata, recording_metadata, recording_data, stacked=False, encode_sex=False)
+
 
         if not os.path.exists(export_folder):
             os.makedirs(export_folder)
@@ -64,15 +67,21 @@ if __name__ == '__main__':
             writer = csv.writer(f)
 
             writer.writerow(patient_features)
-
         f.close()
                             
-        file = os.path.join(subdir, 'recordings_'+patient_id+'.csv')
+        file = os.path.join(subdir, 'recordings_summary_'+patient_id+'.csv')
         with open(file, mode='w', newline='') as f:
             header = "signal mean, signal std, delta psd mean, theta psd mean, alpha psd mean, beta psd mean"
-            np.savetxt(f, recordings, delimiter=',', header=header, fmt='%.16f', comments='')
-
+            np.savetxt(f, recordings_sum, delimiter=',', header=header, fmt='%.16f', comments='')
         f.close()
+
+        headers = ("alpha_psd", "beta_psd", "delta_psd", "theta_psd");
+
+        for j in range(0,4):
+            file = os.path.join(subdir, headers[j]+''+patient_id+'.csv')
+            with open(file, mode='w', newline='') as f:
+                np.savetxt(f, recordings_raw[j], delimiter=',', fmt='%.16f', comments='')
+            f.close()
 
 
   
